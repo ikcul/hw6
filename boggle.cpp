@@ -105,15 +105,15 @@ bool boggleHelper(const std::set<std::string>& dict, const std::set<std::string>
 		return false;
 	}
 
-
-	if (boggleHelper(dict, prefix, board, word, result, r + dr, c + dc, dr, dc)){
+	bool temp = boggleHelper(dict, prefix, board, word, result, r + dr, c + dc, dr, dc);
+	if (temp){
 		return true;
 	}else{
 		if (dict.count(word) != 0){
 			result.insert(word);
 			return true;
 		}
-		return false;
+		return temp;
 	}
 	
 
