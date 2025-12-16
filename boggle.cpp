@@ -106,7 +106,7 @@ bool boggleHelper(const std::set<std::string>& dict, const std::set<std::string>
 	}
 
 
-	if (boggleHelper(dict, prefix, board, word, result, r + dr, c + dc, r, c)){
+	if (boggleHelper(dict, prefix, board, word, result, r + dr, c + dc, dr, dc)){
 		return true;
 	}else{
 		if (dict.count(word) != 0){
