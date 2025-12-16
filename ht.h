@@ -443,11 +443,13 @@ void HashTable<K,V,Prober,Hash,KEqual>::resize()
     mIndex_++;
     std::vector<HashItem*> newTable(CAPACITIES[mIndex_], nullptr);
     totalItems_ = 0;
+    n_ = 0;
     for (size_t i = 0; i < table_.size(); i++){
         if (table_[i] != nullptr && !table_[i]->deleted){
             HASH_INDEX_T loc = probe(table_[i]->item.first);
             newTable[loc] = table_[i];
             totalItems_++;
+            n_++;
         }else if(table_[i] != nullptr && table_[i]->deleted){
             delete table_[i];
         }
