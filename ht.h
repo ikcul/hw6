@@ -448,7 +448,7 @@ void HashTable<K,V,Prober,Hash,KEqual>::resize()
             HASH_INDEX_T loc = probe(table_[i]->item.first);
             newTable[loc] = table_[i];
             totalItems_++;
-        }else if(table_[i] == nullptr || table_[i]->deleted){
+        }else if(table_[i] != nullptr && table_[i]->deleted){
             delete table_[i];
         }
     }
