@@ -445,7 +445,7 @@ void HashTable<K,V,Prober,Hash,KEqual>::resize()
     table_.resize(CAPACITIES[mIndex_], nullptr);
     totalItems_ = 0;
     n_ = 0;
-    for (size_t i = 0; i < table_.size(); i++){
+    for (size_t i = 0; i < oldTable.size(); i++){
         if (oldTable[i] != nullptr && !oldTable[i]->deleted){
             HASH_INDEX_T loc = probe(oldTable[i]->item.first);
             table_[loc] = oldTable[i];
