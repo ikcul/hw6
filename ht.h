@@ -441,20 +441,20 @@ void HashTable<K,V,Prober,Hash,KEqual>::resize()
         throw std::logic_error("No new tablesizes available");
     }
     mIndex_++;
-    std::vector<HashItem*> newTable(CAPACITIES[mIndex_], nullptr);
+    std::vector<HashItem*> oldTable = table_;
+    table_.resize(CAPACITIES[mIndex_], nullptr);
     totalItems_ = 0;
     n_ = 0;
     for (size_t i = 0; i < table_.size(); i++){
-        if (table_[i] != nullptr && !table_[i]->deleted){
-            HASH_INDEX_T loc = probe(table_[i]->item.first);
-            newTable[loc] = table_[i];
+        if (oldTable[i] != nullptr && !oldTable[i]->deleted){
+            HASH_INDEX_T loc = probe(oldTable[i]->item.first);
+            table_[loc] = oldTable[i];
             totalItems_++;
             n_++;
-        }else if(table_[i] != nullptr && table_[i]->deleted){
-            delete table_[i];
+        }else if(oldTable[i] != nullptr && oldTable[i]->deleted){
+            delete oldTable[i];
         }
     }
-    table_ = newTable;
     
 }
 
