@@ -20,21 +20,29 @@ struct MyStringHash {
     HASH_INDEX_T operator()(const std::string& k) const
     {
         // Add your code here
+        // defines the array that is used later
         unsigned long long w[5] = {0};
+        //using this to help the conversion from base 36 to decimal
         unsigned long long power = 1;
+        //counts each block to see if it adds to the max block of 6
         int counter = 0;
+        //starts in reverse order
         int idxW = 4;
 
         for (int i = k.length() -1; i >= 0; i--){
+            //block to count if the block is 6 and resets the power counter and decrements the idxW
             if (counter == 6){
                 counter = 0;
                 power=1;
                 idxW--;
             }
+            //adds the letter to digit with the respective base to the array
             w[idxW] += letterDigitToNumber(k[i]) * power;
+            //increases counter and power
             power*=36;
             counter++;
         }
+        //returns the total hash of the string
         HASH_INDEX_T hash = 0;
         for (int i = 0; i < 5; i++){
             hash += rValues[i] * w[i];
@@ -47,9 +55,11 @@ struct MyStringHash {
     HASH_INDEX_T letterDigitToNumber(char letter) const
     {
         // Add code here or delete this helper function if you do not want it
+        //ensures all capital letters are lowercased in ASCII
         if (letter >= 'A' && letter <= 'Z'){
             letter += 32;
         }
+        //checks to see if it is alphabetical or numerical
         if (letter >= 'a' && letter <= 'z'){
             return letter - 'a';
         }else{

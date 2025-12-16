@@ -96,25 +96,31 @@ bool boggleHelper(const std::set<std::string>& dict, const std::set<std::string>
 {
 //add your solution here!
 //this is the base case
-	if (r >= board.size() || c>= board.size()){
+	if (r >= board.size() || c>= board[0].size()){
+		//essentially returns once we are out of bounds
 		return false;
 	}
 	//this is where i add the current letter to the word
 	word += board[r][c];
 	if (prefix.count(word) == 0){
+		//checks to see if the word is a prefix and if we should prune this path
 		return false;
+	}
+	if (dict.count(word) == 0){
+		return false; //same thing
 	}
 
 	bool temp = boggleHelper(dict, prefix, board, word, result, r + dr, c + dc, dr, dc);
+	
 	if (temp){
 		return true;
-	}else{
-		if (dict.count(word) != 0){
-			result.insert(word);
-			return true;
-		}
 	}
-	return temp;
-	
+	if (dict.count(word) != 0){
+		//we found the longest word
+		result.insert(word);
+		return true;
+	}
+	return false;
+	//prune
 
 }

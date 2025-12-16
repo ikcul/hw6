@@ -102,9 +102,11 @@ public:
     // To be completed
     HASH_INDEX_T next() 
     {
+        //checks to see if it is out of bounds
         if (this->numProbes_ == this->m_){
             return this->npos;
         }else{
+            //else returns the hash formula of probes * step + start all modded by the table size
             HASH_INDEX_T temp = (this->numProbes_ * this->dhstep_ + this->start_) % this->m_;
             this->numProbes_++;
             return temp;
@@ -301,10 +303,12 @@ HashTable<K,V,Prober,Hash,KEqual>::HashTable(
        :  hash_(hash), kequal_(kequal), prober_(prober)
 {
     // Initialize any other data members as necessary
+    //initialize which table size we are using, resets alpha and number of items and number of non-deleted items
     mIndex_ = 0;
     alpha_ = resizeAlpha;
     n_ = 0;
     totalItems_ = 0;
+    //resizes to the inital table capacity
     table_.resize(CAPACITIES[mIndex_], nullptr);
 }
 
@@ -335,17 +339,21 @@ size_t HashTable<K,V,Prober,Hash,KEqual>::size() const
 template<typename K, typename V, typename Prober, typename Hash, typename KEqual>
 void HashTable<K,V,Prober,Hash,KEqual>::insert(const ItemType& p)
 {
+    //first checks if the loading factor necessitates a resize
     double currAlpha = (double)(totalItems_)/(double)(CAPACITIES[mIndex_]);
     if (currAlpha >= alpha_){
         resize();
     }
+    //probes to see if the table is full or if it already exists
     HASH_INDEX_T temp = probe(p.first);
     if (temp == npos){
         throw std::logic_error("Hashtable is full");
     }
     if (table_[temp] != nullptr){
+        //updates value
         table_[temp]->item.second = p.second;
     }else{
+        //inserts it
         HashItem* newItem = new HashItem(p);
         table_[temp] = newItem;
         n_++;
@@ -358,6 +366,7 @@ void HashTable<K,V,Prober,Hash,KEqual>::insert(const ItemType& p)
 template<typename K, typename V, typename Prober, typename Hash, typename KEqual>
 void HashTable<K,V,Prober,Hash,KEqual>::remove(const KeyType& key)
 {
+    //probes the key and turns its state to deleted and decrement the number of active elements
     HASH_INDEX_T temp = probe(key);
     if (temp != npos && table_[temp] != nullptr){
         table_[temp]->deleted = true;
@@ -437,21 +446,25 @@ typename HashTable<K,V,Prober,Hash,KEqual>::HashItem* HashTable<K,V,Prober,Hash,
 template<typename K, typename V, typename Prober, typename Hash, typename KEqual>
 void HashTable<K,V,Prober,Hash,KEqual>::resize()
 {
+    //checks to see if we are out of new table resizing options
     if (mIndex_ + 1 == 28){
         throw std::logic_error("No new tablesizes available");
     }
+    //increments to the new table size and stores the old table and makes a new table
     mIndex_++;
     std::vector<HashItem*> oldTable = table_;
     table_ = std::vector<HashItem*>(CAPACITIES[mIndex_], nullptr);
     totalItems_ = 0;
     n_ = 0;
     for (size_t i = 0; i < oldTable.size(); i++){
+        //checks to see if the element is active and that it is not nullptr
         if (oldTable[i] != nullptr && !oldTable[i]->deleted){
             HASH_INDEX_T loc = probe(oldTable[i]->item.first);
             table_[loc] = oldTable[i];
             totalItems_++;
             n_++;
         }else if(oldTable[i] != nullptr && oldTable[i]->deleted){
+            //deletes any hanging element
             delete oldTable[i];
         }
     }
