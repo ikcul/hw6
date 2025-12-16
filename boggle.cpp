@@ -96,7 +96,7 @@ bool boggleHelper(const std::set<std::string>& dict, const std::set<std::string>
 {
 //add your solution here!
 //this is the base case
-	if (r >= board.size() || c>= board[0].size()){
+	if (r >= board.size() || c>= board.size()){
 		//essentially returns once we are out of bounds
 		return false;
 	}
