@@ -115,7 +115,7 @@ bool boggleHelper(const std::set<std::string>& dict, const std::set<std::string>
 	if (temp){
 		return true;
 	}
-	if (dict.count(word) != 0){
+	else if (dict.count(word) != 0){
 		//we found the longest word
 		result.insert(word);
 		return true;
