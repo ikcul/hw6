@@ -305,7 +305,6 @@ HashTable<K,V,Prober,Hash,KEqual>::HashTable(
     alpha_ = resizeAlpha;
     n_ = 0;
     totalItems_ = 0;
-    numProbes_ = 0;
     table_.resize(CAPACITIES[mIndex_], nullptr);
 }
 
@@ -445,11 +444,11 @@ void HashTable<K,V,Prober,Hash,KEqual>::resize()
     std::vector<HashItem*> newTable(CAPACITIES[mIndex_], nullptr);
     totalItems_ = 0;
     for (size_t i = 0; i < table_.size(); i++){
-        if (table_[i] != nullptr && !table[i]->deleted){
+        if (table_[i] != nullptr && !table_[i]->deleted){
             HASH_INDEX_T loc = probe(table_[i]->item.first);
             newTable[loc] = table_[i];
             totalItems_++;
-        }else if(table_[i] == nullptr || table_[i]->deleted){
+        }else if(table_[i] == nullptr && table_[i]->deleted){
             delete table_[i];
         }
     }
