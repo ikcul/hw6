@@ -102,7 +102,7 @@ bool boggleHelper(const std::set<std::string>& dict, const std::set<std::string>
 	}
 	//this is where i add the current letter to the word
 	word += board[r][c];
-	if (prefix.count(word) == 0){
+	if (prefix.count(word) == 0 && dict.count(word) == 0){
 		//checks to see if the word is a prefix and if we should prune this path
 		return false;
 	}
