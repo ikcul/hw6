@@ -28,10 +28,11 @@ struct MyStringHash {
         for (int i = k.length() -1; i >= 0; i--){
             if (counter == 6){
                 counter = 0;
-                power*=36;
+                power=1;
                 idxW--;
             }
             w[idxW] += letterDigitToNumber(k[i]) * power;
+            power*=36;
             counter++;
         }
         HASH_INDEX_T hash = 0;
