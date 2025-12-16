@@ -106,10 +106,6 @@ bool boggleHelper(const std::set<std::string>& dict, const std::set<std::string>
 		//checks to see if the word is a prefix and if we should prune this path
 		return false;
 	}
-	if (dict.count(word) == 0){
-		return false; //same thing
-	}
-
 	bool temp = boggleHelper(dict, prefix, board, word, result, r + dr, c + dc, dr, dc);
 	
 	if (temp){
