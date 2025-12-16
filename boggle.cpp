@@ -107,7 +107,6 @@ bool boggleHelper(const std::set<std::string>& dict, const std::set<std::string>
 		return false;
 	}
 	bool temp = boggleHelper(dict, prefix, board, word, result, r + dr, c + dc, dr, dc);
-	
 	if (temp){
 		return true;
 	}
