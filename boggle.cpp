@@ -113,8 +113,8 @@ bool boggleHelper(const std::set<std::string>& dict, const std::set<std::string>
 			result.insert(word);
 			return true;
 		}
-		return temp;
 	}
+	return temp;
 	
 
 }
