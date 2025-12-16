@@ -95,5 +95,26 @@ bool boggleHelper(const std::set<std::string>& dict, const std::set<std::string>
 								   std::string word, std::set<std::string>& result, unsigned int r, unsigned int c, int dr, int dc)
 {
 //add your solution here!
+//this is the base case
+	if (r >= board.size() || c>= board.size()){
+		return false;
+	}
+	//this is where i add the current letter to the word
+	word += board[r][c];
+	if (prefix.count(word) == 0){
+		return false;
+	}
+
+
+	if (boggleHelper(dict, prefix, board, word, result, r + dr, c + dc, r, c)){
+		return true;
+	}else{
+		if (dict.count(word) != 0){
+			result.insert(word);
+			return true;
+		}
+		return false;
+	}
+	
 
 }
